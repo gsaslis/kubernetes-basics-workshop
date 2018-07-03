@@ -1,0 +1,5 @@
+= Contributing guidelines
+
+1. If you see any info that's become outdated (or is just plain wrong), please raise an issue. 
+1. Pull Requests are welcome, but before you go into the effort of opening a PR, please do raise the issue,
+so we can agree that this is something that makes sense to be added to this repo.
