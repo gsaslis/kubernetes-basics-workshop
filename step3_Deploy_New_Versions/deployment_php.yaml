@@ -3,17 +3,17 @@ kind: Deployment
 metadata:
   name: devstaff-hello-php
   labels:
-    app: devstaff-k8s
+    app: devstaff-k8s-php
 spec:
   selector:
     matchLabels:
-      app: devstaff-k8s
+      app: devstaff-k8s-php
       tier: frontend
   replicas: 2
   template:
     metadata:
       labels:
-        app: devstaff-k8s
+        app: devstaff-k8s-php
         tier: frontend
     spec:
       containers:
