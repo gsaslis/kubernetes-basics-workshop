@@ -1,0 +1,27 @@
+= Kubernetes Basics Workshop
+
+In this workshop, you will be walked through some of the main concepts in Kubernetes. The workshop will not go into advanced concepts and is meant for people with little to no Kubernetes experience. It is a _Beginner_ level workshop.
+
+
+== Pre-requisites
+
+Here's what you'll need to get started:
+
+* Familiarity with Docker (Assumed)
+* https://kubernetes.io/docs/tasks/tools/install-minikube/[Minikube] installed (Please note `Windows` support is still EXPERIMENTAL! )
+* The Kubernetes command-line control tool, https://kubernetes.io/docs/tasks/tools/install-kubectl/[kubectl], installed
+
+By installing Minikube, you will have a virtual machine running on your laptop, with a Kubernetes cluster ready for you to play with.
+
+Once you're ready, please proceed to link:step1_Deploy_Application/README.asciidoc[Step 1]
+
+
+== Troubleshooting
+
+
+1. `minikube status` reports if minikube is running
+1. If Pods are randomly getting killed during their startup loop, check that you have assigned enough memory to Minikube e.g. `minikube start --memory 4096`
+1. `kubectl get pods` / `kubectl get svc` / `kubectl get deployments` are your friends, and so is the `kubectl describe ...` command. You can also use the Kubernetes Dashboard for this kind of info.
+1. Check you're in the right `Namespace`. K8s namespaces offer isolation, so if you're not seeing some resources which you think you should be able to, perhaps it's because... you're not allowed to, by design, due to the namespace isolation. Add `-n <namespace_name>` to your `kubectl` commands.
+1. If Pods are taking a long time to start, and it's the first time you're running the application you're trying to deploy, chances are the docker image is being downloaded. Grab a coffee...
+1. Don't use static IPs to access your web services. Wrap them behind `Services` and use service domain names.

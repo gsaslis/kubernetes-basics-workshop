@@ -1,0 +1,23 @@
+= Deploying 3rd-Party Software on Kubernetes
+
+The way in which you will deploy a 3rd-party solution on your Kubernetes cluster largely depends on how well-suited this application is to the Kubernetes platform.
+
+The easiest way to check if an application will play well on Kubernetes, would be if there was a package repository where you could check if a package exists, much like you would do on your Linux OS with your package manager (think `apt search <package_name>`). Or, if you had a Kubernetes App Store, like you have on your mobile phone with Apple's App Store and Google Play.
+
+You're in luck!! There is!!
+
+The https://helm.sh/[Helm Package Manager] aims to solve exactly this problem! And it's open source, so you can add your own apps!
+
+Helm calls its packages `Charts` and you can find a list of all the available charts here: https://github.com/kubernetes/charts
+
+NOTE: Please note there's both a `stable` folder, as well as an `incubator` one, where you might be able to find some less-tested / production-ready packages.
+
+== Install Helm
+
+https://github.com/kubernetes/helm/blob/master/docs/install.md
+
+== Deploy Mysql
+
+Now, your task is to replace the mysql deployment we manually released, with the one from Helm, and connect the PHP application to it.
+
+Hint: Use `kubectl delete` to get rid of old resources you no longer need.

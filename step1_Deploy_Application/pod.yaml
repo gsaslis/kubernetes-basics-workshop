@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: devstaff-hello-k8s
+  labels:
+    app: devstaff-k8s
+spec:
+  containers:
+  - name: devstaff-hello-k8s
+    image: hello-php-world:v0.1
+    imagePullPolicy: IfNotPresent
+    ports:
+      - containerPort: 80

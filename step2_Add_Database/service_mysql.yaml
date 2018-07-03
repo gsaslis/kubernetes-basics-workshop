@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: devstaff-mysql
+  labels:
+    app: devstaff-k8s
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: devstaff-k8s
+    tier: mysql
+  clusterIP: None

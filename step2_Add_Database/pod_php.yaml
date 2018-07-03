@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: devstaff-hello-k8s
+  labels:
+    app: devstaff-k8s
+spec:
+  containers:
+  - name: devstaff-hello-k8s
+    image: hello-php-world:latest
+    imagePullPolicy: IfNotPresent    # important for minikube
+    env:
+      - name: DB_HOST
+        value: devstaff-mysql
+      - name: DB_NAME
+        value: devstaff_db
+      - name: DB_USER
+        value: devstaff
+      - name: DB_PASS
+        valueFrom:
+          secretKeyRef:
+            name: mysql-user-pass
+            key: password
+    ports:
+      - containerPort: 80

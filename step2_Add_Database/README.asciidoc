@@ -1,0 +1,78 @@
+= Deploy MySQL
+:sectnums:
+
+
+We'll now deploy a single-instance MySQL database, so we can explore a few further key concepts:
+
+* PersistentVolumes and PersistentVolumeClaims
+* Secrets
+* Deployments
+
+
+
+
+
+== Create a Secret for MySQL Password
+A https://kubernetes.io/docs/concepts/configuration/secret/[Secret] is an object that stores a piece of sensitive data like a password or key.
+
+Your database password is a very good example of what should be created as a `Secret`.
+
+Use the following command and remember to replace `YOUR_PASS` and `YOUR_USER_PASS`.
+
+[source, bash]
+----
+kubectl create secret generic mysql-root-pass --from-literal=password=YOUR_PASS
+kubectl create secret generic mysql-user-pass --from-literal=password=YOUR_USER_PASS
+----
+
+Verify that the Secret has been successfully created, like so:
+
+[source, bash]
+----
+kubectl get secrets
+----
+
+The response should be like this:
+
+[source, bash]
+----
+NAME                  TYPE                    DATA      AGE
+mysql-root-pass            Opaque                  1         45s
+mysql-user-pass            Opaque                  1         42s
+----
+
+The MYSQL_ROOT_PASSWORD environment variable sets the database password from the Secret.
+
+
+== PersistentVolumes & PersistentVolumeClaims
+
+You need the database data, to persist, right?
+
+In a standard container, the data would be lost when the container was deleted. For that reason, Kubernetes provides the notion of `PersistentVolumes`. link:https://kubernetes.io/docs/concepts/storage/persistent-volumes/[Persistent Volumes] have a different lifecycle than that of a `Pod`, so even in the case where your application is moved to another host, your data will persist.
+
+Our MySQL container will mount the PersistentVolume at the standard data directory path: `/var/lib/mysql`.
+
+`PersistentVolumeClaims` are a way for application developers to define storage requirements and have Kubernetes automatically create volumes for them and mount them to the corresponding `Pods`, through Dynamic Provisioning.
+
+Go ahead and create the PersistentVolumeClaim with:
+
+[source, bash]
+----
+kubectl apply -f pvc.yaml
+----
+
+== Deployments
+
+The Kubernetes high-level link:https://kubernetes.io/docs/concepts/workloads/controllers/deployment/[Deployment] entity provides a controller that allows declarative updates for `Pods` and `ReplicaSets`.
+
+We can now use a `Deployment` to deploy our mysql database, together with a `Service` to allow our app to connect to the database:
+
+[source, bash]
+----
+kubectl apply -f deployment_mysql.yaml
+kubectl apply -f service_mysql.yaml
+----
+
+
+
+

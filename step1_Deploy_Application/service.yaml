@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: hello-world-service
+spec:
+  type: NodePort  # this type of `Service` works by Kubernetes opening a port on the host where the container is running.
+  selector:
+    app: devstaff-k8s
+  ports:
+  - protocol: TCP
+    port: 80

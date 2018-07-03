@@ -1,0 +1,45 @@
+= Move from standalone Pod to Deployment
+:sectnums:
+
+
+1. Get rid of old PHP pod.
+2. Examine the `Deployment` descriptor in this directory, to see how to deploy your app using that.
+
+Remember that link:https://kubernetes.io/docs/concepts/workloads/controllers/deployment/[Deployment] provides a controller for declarative updates to `Pods` and `ReplicaSets`.
+
+
+== Rolling Updates
+
+The process for a rolling update is as simple as:
+
+1. Make some change to the PHP
+1. Rebuild docker image with: `docker build -t hello-php-world:v0.2` (or whatever version you are up to).
+1. Change docker image version in your existing deployment descriptor file
+1. Apply the changes with `kubectl apply -f deployment_php.yaml`
+1. Watch the status of the update with: `kubectl rollout status deployment/devstaff-hello-php`
+
+
+== Blue/Green Updates
+
+In this update scenario, you would:
+
+1. Make some changes to your source code
+1. Rebuild docker image with: `docker build -t hello-php-world:v0.2` (or whatever version you are up to).
+1. Create a NEW deployment called Green (you will later rename your current one to Blue), with the docker image version you just created.
+1. Release the new Deployment, without binding it to the pre-existing `Service` (use a `Green` service if you have to, so you can run your tests)
+1. Once you're happy with your tests, start using `Green` and bring `Blue` down.
+
+== Readiness / Liveness Probes
+
+These probes are used by Kubernetes to understand if a `Pod` is healthy.
+
+Read a little more in the docs to understand about these, here: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+
+Now, your task is to write a `readiness` and a `liveness` probe for your application:
+
+* For the `readiness` probe, let's assume a `200` status code from your PHP code will suffice.
+* For the `liveness` probe, let's test database connectivity as well (though this wouldn't always be an appropriate liveness check), so let's assume our check is that we can successfully `SELECT 1` from the database.
+
+Once implemented in your PHP code, add the readiness and liveness sections in the `Deployment` descriptor.
+
+BONUS: For extra points, try to *manually* fail the checks on each of your probes, by introducing some failure condition. See how Kubernetes deals with that.

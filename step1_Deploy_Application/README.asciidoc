@@ -1,0 +1,107 @@
+= Deploying a PHP `Hello World` on Kubernetes
+:sectnums:
+
+
+We will start with a basic `Hello World` PHP application, which we will deploy onto our Kubernetes cluster.
+
+== Source
+
+The source for the PHP Hello World is in link:php/hello.php[hello.php].
+
+== Docker image
+
+Now, since this is a Kubernetes workshop, you'll need this application to run in a container. For that, I've included a dead simple link:Dockerfile[Dockerfile], which just takes a PHP Apache base image and copies our source in the content root of the web server.
+
+First, let's ensure `minikube` is up and running!
+
+[source, bash]
+----
+minikube start
+----
+
+Now, remember that the docker that `minikube` knows about is running inside the VM on your host. If you want to use the `docker` command-line client on your host (and the docker daemon may not even be running on your host), you'll need to tell it which docker daemon to connect to.
+
+For this, you'll need to use the following command:
+
+[source, bash]
+----
+$ minikube docker-env
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.100:2376"
+export DOCKER_CERT_PATH="/Users/yorgos/.minikube/certs"
+export DOCKER_API_VERSION="1.23"
+# Run this command to configure your shell:
+# eval $(minikube docker-env)
+----
+
+Make sure to run the `eval $(minikube docker-env)` command.
+
+
+With that, we can now proceed with building the docker image:
+
+[source, bash]
+----
+docker build --tag hello-php-world:v0.1 .
+----
+
+
+== Run your app in Kubernetes
+
+In Kubernetes, docker containers run inside `Pods`. Use the link:https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/[official docs] to get a better idea of what Pods do.
+
+We have a basic example of a Pod descriptor link:pod.yaml[here]. You can deploy this to your Kubernetes cluster using:
+
+[source, bash]
+----
+kubectl apply -f pod.yaml
+----
+
+Now, verify the Pod is running with:
+
+[source, bash]
+----
+kubectl get pods
+----
+
+Please note you can check the logs of your pod at any time, from your command line, with:
+
+[source, bash]
+----
+kubectl logs devstaff-hello-k8s
+----
+
+== Access the Hello World app from your browser
+
+We've just deployed a PHP application, but we can't really verify that it's been deployed properly and that it's working, apart from `Kubernetes` telling us that it's `Running`.
+
+That's because our Docker container is running somewhere inside the depths of Kubernetes, with no easy way for us to access it.
+
+To access web services, we'll need to make use of another high-level Kubernetes entity - `Services` [link:https://kubernetes.io/docs/concepts/services-networking/service/[docs here]].
+
+Go ahead and check out the Service descriptor link:service.yaml[here].
+
+[source, bash]
+----
+kubectl apply -f service.yaml
+----
+
+Now have minikube tell you where you can access your service on your host:
+
+[source, bash]
+----
+minikube service hello-world-service --url
+----
+
+NOTE: Please remember to add `hello.php` at the end of the generated URL.
+
+
+== Familiarize yourself with the Dashboard
+
+Should be accessible with:
+
+[source, bash]
+----
+minikube dashboard
+----
+
+Take a look around and familiarize yourself with what you see...
