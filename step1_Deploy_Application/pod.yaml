@@ -4,6 +4,7 @@ metadata:
   name: devstaff-hello-k8s
   labels:
     app: devstaff-k8s
+    tier: frontend
 spec:
   containers:
   - name: devstaff-hello-k8s

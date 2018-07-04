@@ -4,6 +4,7 @@ metadata:
   name: devstaff-mysql
   labels:
     app: devstaff-k8s
+    tier: mysql
 spec:
   ports:
     - port: 3306

@@ -4,6 +4,7 @@ metadata:
   name: devstaff-hello-php
   labels:
     app: devstaff-k8s-php
+    tier: frontend
 spec:
   selector:
     matchLabels:
