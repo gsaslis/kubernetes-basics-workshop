@@ -1,14 +1,28 @@
-= Move from standalone Pod to Deployment
+= From ReplicaSet to Deployment
 :sectnums:
 
+The trouble with `ReplicaSets` comes when you need to deploy a new version of your application.
 
-1. Get rid of old PHP pod.
-2. Examine the `Deployment` descriptor in this directory, to see how to deploy your app using that.
+== Releasing New Versions with ReplicaSets
 
-Remember that link:https://kubernetes.io/docs/concepts/workloads/controllers/deployment/[Deployment] provides a controller for declarative updates to `Pods` and `ReplicaSets`.
+The first task in this chapter is to try that out for yourselves.
+
+1. Make some change to the PHP
+1. Rebuild docker image with: `docker build -t hello-php-world:v0.2` (or whatever version you are up to).
+1. Change docker image version in your existing `ReplicaSet` descriptor file
+1. Release the new version of the `ReplicaSet` and see watch closely to what happens to your running pods.
 
 
-== Rolling Updates
+== Introducing Deployments
+
+Kubernetes uses the concept of link:https://kubernetes.io/docs/concepts/workloads/controllers/deployment/[Deployments] as a higher-level concept than `ReplicaSets`, as it provides a controller for declarative updates to `Pods` and `ReplicaSets`. i.e. it gives you a way to release new versions of your application, with no downtime, like you had in your previous step.
+
+So, let's give `Deployments` a go...
+
+1. Examine the `Deployment` descriptor in this directory, to see how to deploy your app using that.
+1. You'll notice very minor differences, so go ahead and get rid of the standalone `ReplicaSet` and deploy the `Deployment`.
+
+=== Rolling Updates
 
 The process for a rolling update is as simple as:
 
@@ -19,7 +33,7 @@ The process for a rolling update is as simple as:
 1. Watch the status of the update with: `kubectl rollout status deployment/devstaff-hello-php`
 
 
-== Blue/Green Updates
+=== Blue/Green Updates
 
 In this update scenario, you would:
 
@@ -29,7 +43,7 @@ In this update scenario, you would:
 1. Release the new Deployment, without binding it to the pre-existing `Service` (use a `Green` service if you have to, so you can run your tests)
 1. Once you're happy with your tests, start using `Green` and bring `Blue` down.
 
-== Readiness / Liveness Probes
+=== Readiness / Liveness Probes
 
 These probes are used by Kubernetes to understand if a `Pod` is healthy.
 

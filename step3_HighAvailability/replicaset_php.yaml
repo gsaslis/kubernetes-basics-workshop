@@ -1,0 +1,37 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: ReplicaSet
+metadata:
+  name: devstaff-hello-php
+  labels:
+    app: devstaff-k8s-php
+    tier: frontend
+spec:
+  selector:
+    matchLabels:
+      app: devstaff-k8s-php
+      tier: frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: devstaff-k8s-php
+        tier: frontend
+    spec:
+      containers:
+      - image: hello-php-world:v0.1
+        imagePullPolicy: IfNotPresent  # important for minikube
+        name: devstaff-hello-php
+        env:
+          - name: DB_HOST
+            value: devstaff-mysql
+          - name: DB_NAME
+            value: devstaff_db
+          - name: DB_USER
+            value: devstaff
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: mysql-user-pass
+                key: password
+        ports:
+        - containerPort: 80

@@ -1,0 +1,55 @@
+= High Availability for your Apps
+:sectnums:
+
+i.e. Handling app crashes and load surges
+
+== Handling Crashes and Failures
+
+One of the main problems you have to solve for your application, when it runs in production, is what to do when it crashes (and it WILL crash!). Or when there is some problem with the server your application is running on (out of disk space, hardware failures, network connectivity issues - network partitions - etc.).
+
+=== Restarts
+
+The simplest thing to do when your application crashes, is to restart it. (link:https://youtu.be/nn2FB1P_Mn8?t=28["Have you tried turning it off and on again"] goes a long way in the Operations world).
+
+When you are running on a single server, a common solution to this problem is to write a `system service` and use the OS `service manager` ( `systemd`, `upstart`, `System V Init`, etc.) to handle the lifecycle of your application for you. It does such things as ensure that the application *starts* if the server reboots, and *restarts* in case it crashes, etc.
+
+On Kubernetes, if your app crashes, the Pod already tries to restart it for you. Win!
+
+=== Failures
+
+This is a completely different problem however, when you want to overcome the failure of the very server that your application is running on.
+
+For that, you need what's commonly known as a fail-over mechanism.
+
+Setting this up has traditionally been anything but a trivial problem to solve and quite the pain to maintain. But times have changed...
+
+==== Fail-over on Kubernetes
+
+First up, you have to have more than one servers at your disposal. In Kubernetes those would be the `worker` nodes. With that, we can set up a fail-over system such that if one of the servers experiences a fatal problem, the other server can take over and start the application there.
+
+In Kubernetes, the concept of fail-over is implemented with `ReplicaSets` (and, their ancestors, `ReplicationControllers`).
+`ReplicaSets` are a higher-level concept than `Pods` and they ensure that a specified number of pod replicas are running at any given time.
+
+A `ReplicaSet` with `1` Pod replica is a dead-simple way to have out-of-the-box fail-over support in Kubernetes.
+
+Let's try this out!
+
+1. Delete your old Pod that's running. (HINT: check out `kubectl delete`).
+2. Examine the `ReplicaSet` descriptor in this directory, and deploy your app using that instead of the standalone pod. Confirm the ReplicaSet has been created and that the pods linked to it are running.
+3. Now, try to delete the pod, to see how Kubernetes handles that event and how the ReplicaSet creates a brand new pod for you (under the existing ReplicaSet). With ReplicaSets, you just Kubernetes how many identical replicas of your Pod you want running, and it will handle the rest.
+
+
+== Handling Load Surges
+
+Now that you have ensured one instance of your application is always running, through ReplicaSets, it is time to look at how to handle *increased load*.
+
+By increased load, I am referring to the cases when your application receives a higher workload to handle than it would on average. You can think of your own examples here when you've had to deal with such situations (successful marketing campaign, new large client, etc.).
+
+How we handle this load largely depends on the nature of the application of course. Let's start with the easiest case.
+
+For `stateless` applications this is as simple as running more instances of your application and using a load balancer to distribute the load across all instances of your application.
+
+Kubernetes `Services` take care of the load balancing part. If you bind your `Service` to a `ReplicaSet`, the `Service` will handle the load balancing to all the `Pods` that are part of the `ReplicaSet`.
+
+1. To see how easy this is, simply increase the replica count inside the `ReplicaSet` descriptor.
+1. With more than `1` replicas, reload the `smartHello.php` application enough times, and you'll notice that it's a different `Pod` that handles your request.
