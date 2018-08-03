@@ -1,4 +1,5 @@
 = Deploying 3rd-Party Software on Kubernetes
+:sectnums:
 
 The way in which you will deploy a 3rd-party solution on your Kubernetes cluster largely depends on how well-suited this application is to the Kubernetes platform.
 

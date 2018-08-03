@@ -6,7 +6,7 @@ We will start with a basic `Hello World` PHP application, which we will deploy o
 
 == Source
 
-The source for the PHP Hello World is in link:php/hello.php[hello.php].
+The source for the PHP Hello World is in link:../php/hello.php[hello.php].
 
 == Docker image
 
