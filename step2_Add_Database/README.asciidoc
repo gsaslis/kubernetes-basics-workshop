@@ -75,4 +75,18 @@ kubectl apply -f service_mysql.yaml
 
 
 
+== Let's Use this Database!
 
+Those of you who have already taken the time to look in the `php` folder, will have found that there is another PHP file in there, named `smartHello.php` that tries to connect to a database, before responding. 
+
+If you try this out now, you'll get a funky PHP error message. 
+
+However, if you look in the source code (which, by the way, is mostly copy-pasted from the internet -- I'm no PHP expert -- so PRs are welcome! ; )  ), you'll notice that it tries to acquire the information about _which database to connect to_ through environment variables. 
+
+Environment variables can be added as part of the `Pod` definition and they are a very convenient way to pass information into applications that are running from static container images. You would NOT want to rebuild your container image every time you wanted to change the database URL your application should connect to. (Remember: in a cloud-native environment, this can change more often than you think!!  ; )   )
+
+Please take a look at link:pod_php.yaml[the Pod descriptor in this directory], where you'll notice the environment variables have been already added for you. 
+
+If you try to `kubectl apply -f pod_php.yaml` directly, you'll get an error message from Kubernetes that basically informs you it's not an operation that is allowed. However, we can always use `kubectl delete` to get rid of the old pod, and then `kubectl apply` to create it again based on the new descriptor. 
+
+Once deployed (verify through dashboard or `kubectl get pods` command), you should be able to access the `smartHello.php` file on the same host + port you used before. 
