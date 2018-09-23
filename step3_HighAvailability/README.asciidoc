@@ -53,3 +53,10 @@ Kubernetes `Services` take care of the load balancing part. If you bind your `Se
 
 1. To see how easy this is, simply increase the replica count inside the `ReplicaSet` descriptor.
 1. With more than `1` replicas, reload the `smartHello.php` application enough times, and you'll notice that it's a different `Pod` that handles your request. It is best to use `curl` for this check, to avoid browser caching issues. 
+
+
+== Automated Scaling
+
+Kubernetes offers out-of-the-box functionality for you to write rules based on which the number of your application's running `Pods` can be automatically scaled up AND down. 
+
+This is the https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/[Horizontal Pod Autoscaler], but it is left as further exercise, beyond the scope of this basic workshop. 
