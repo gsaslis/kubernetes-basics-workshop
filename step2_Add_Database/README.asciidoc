@@ -48,7 +48,7 @@ The MYSQL_ROOT_PASSWORD environment variable sets the database password from the
 
 You need the database data, to persist, right?
 
-In a standard container, the data would be lost when the container was deleted. For that reason, Kubernetes provides the notion of `PersistentVolumes`. link:https://kubernetes.io/docs/concepts/storage/persistent-volumes/[Persistent Volumes] have a different lifecycle than that of a `Pod`, so even in the case where your application is moved to another host, your data will persist.
+In a standard container, the data in a Docker volume only exists in the single server that container is running on. And this is not compatible with the requirements of cloud-native applications, where servers might get killed/replaced/deleted, at any given point in time.  For that reason, Kubernetes provides the notion of `PersistentVolumes`. link:https://kubernetes.io/docs/concepts/storage/persistent-volumes/[Persistent Volumes] have a different lifecycle than that of a `Pod`, so even in the case where your application is moved to another host, your data will persist.
 
 Our MySQL container will mount the PersistentVolume at the standard data directory path: `/var/lib/mysql`.
 
