@@ -4,10 +4,11 @@ metadata:
   name: devstaff-hello-k8s
   labels:
     app: devstaff-k8s
+    tier: frontend
 spec:
   containers:
   - name: devstaff-hello-k8s
-    image: hello-php-world:latest
+    image: hello-php-world:v0.1
     imagePullPolicy: IfNotPresent    # important for minikube
     env:
       - name: DB_HOST
