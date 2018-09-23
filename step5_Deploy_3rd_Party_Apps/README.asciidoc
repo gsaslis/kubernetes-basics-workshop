@@ -21,4 +21,4 @@ https://github.com/kubernetes/helm/blob/master/docs/install.md
 
 Now, your task is to replace the mysql deployment we manually released, with the one from Helm, and connect the PHP application to it.
 
-Hint: Use `kubectl delete` to get rid of old resources you no longer need.
+Hint: You'll want to use `kubectl delete` to get rid of old resources you no longer need (i.e. the existing `Deployment` and `Service`). 
