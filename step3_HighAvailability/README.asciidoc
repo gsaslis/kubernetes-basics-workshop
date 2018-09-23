@@ -52,4 +52,4 @@ For `stateless` applications this is as simple as running more instances of your
 Kubernetes `Services` take care of the load balancing part. If you bind your `Service` to a `ReplicaSet`, the `Service` will handle the load balancing to all the `Pods` that are part of the `ReplicaSet`.
 
 1. To see how easy this is, simply increase the replica count inside the `ReplicaSet` descriptor.
-1. With more than `1` replicas, reload the `smartHello.php` application enough times, and you'll notice that it's a different `Pod` that handles your request.
+1. With more than `1` replicas, reload the `smartHello.php` application enough times, and you'll notice that it's a different `Pod` that handles your request. It is best to use `curl` for this check, to avoid browser caching issues. 
