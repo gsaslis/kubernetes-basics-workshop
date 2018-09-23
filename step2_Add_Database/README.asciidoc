@@ -65,7 +65,7 @@ kubectl apply -f pvc.yaml
 
 The Kubernetes high-level link:https://kubernetes.io/docs/concepts/workloads/controllers/deployment/[Deployment] entity provides a controller that allows declarative updates for `Pods` and `ReplicaSets`. (More details on `Deployments` in link:../step3_HighAvailability/README.asciidoc[Step 3]).
 
-We can now use a `Deployment` to deploy our mysql database, together with a `Service` to allow our app to connect to the database:
+We can now use a `Deployment` to deploy our mysql database, together with a `Service` (we'll also see more details on these later) to allow our app to connect to the database:
 
 [source, bash]
 ----
