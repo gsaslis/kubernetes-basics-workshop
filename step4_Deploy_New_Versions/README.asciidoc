@@ -27,7 +27,7 @@ So, let's give `Deployments` a go...
 The process for a rolling update is as simple as:
 
 1. Make some change to the PHP
-1. Rebuild docker image with: `docker build -t hello-php-world:v0.2` (or whatever version you are up to).
+1. Rebuild docker image with: `docker build -t hello-php-world:v0.3` (or whatever version you are up to).
 1. Change docker image version in your existing deployment descriptor file
 1. Apply the changes with `kubectl apply -f deployment_php.yaml`
 1. Watch the status of the update with: `kubectl rollout status deployment/devstaff-hello-php`
@@ -38,7 +38,7 @@ The process for a rolling update is as simple as:
 In this update scenario, you would:
 
 1. Make some changes to your source code
-1. Rebuild docker image with: `docker build -t hello-php-world:v0.2` (or whatever version you are up to).
+1. Rebuild docker image with: `docker build -t hello-php-world:v0.4` (or whatever version you are up to).
 1. Create a NEW deployment called Green (you will later rename your current one to Blue), with the docker image version you just created.
 1. Release the new Deployment, without binding it to the pre-existing `Service` (use a `Green` service if you have to, so you can run your tests)
 1. Once you're happy with your tests, start using `Green` and bring `Blue` down.
