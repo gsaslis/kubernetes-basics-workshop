@@ -8,6 +8,7 @@ In this workshop, you will be walked through some of the main concepts in Kubern
 Here's what you'll need to get started:
 
 * Familiarity with Docker (Assumed)
+* Docker installed locally (here's the [official how-to](https://docs.docker.com/install/#supported-platforms) )
 * https://kubernetes.io/docs/tasks/tools/install-minikube/[Minikube] installed (Please note `Windows` support is still EXPERIMENTAL! )
 * The Kubernetes command-line control tool, https://kubernetes.io/docs/tasks/tools/install-kubectl/[kubectl], installed
 
