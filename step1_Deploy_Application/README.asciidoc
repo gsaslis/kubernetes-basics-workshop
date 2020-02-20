@@ -10,7 +10,7 @@ The source for the PHP Hello World is in link:../php/hello.php[hello.php].
 
 == Docker image
 
-Now, since this is a Kubernetes workshop, you'll need this application to run in a container. For that, I've included a dead simple link:Dockerfile[Dockerfile], which just takes a PHP Apache base image and copies our source in the content root of the web server.
+Now, since this is a Kubernetes workshop, you'll need this application to run in a container. For that, I've included a dead simple link:../Dockerfile[Dockerfile], which just takes a PHP Apache base image and copies our source in the content root of the web server.
 
 First, let's ensure `minikube` is up and running!
 
